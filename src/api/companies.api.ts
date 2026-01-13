@@ -1,35 +1,35 @@
 import api from './axios';
-import type { Company, CompanyForm, Employee } from '@/interfaces';
+import type { Company, CompanyForm, Employee, EmployeeForm } from '@/interfaces';
 
 export const companiesApi = {
     // List companies
     async listCompanies(): Promise<Company[]> {
         const response = await api.get<Company[]>('/companies');
-        return response.data.map((user: any) => ({
-            id: user.id,
-            name: user.name,
-            description: user.company?.description || '',
-            cnpj: `${Math.floor(Math.random() * 90000000000000) + 10000000000000}`,
-            phone: user.phone,
-            email: user.email,
-            address: `${user.address?.street}, ${user.address?.city}`,
-            status: Math.random() > 0.3 ? 'ativa' : 'inativa',
+        return response.data.map((company: any) => ({
+            id: company.id,
+            name: company.name,
+            description: company.description || '',
+            cnpj: company.cnpj,
+            phone: company.phone,
+            email: company.email,
+            address: company.address,
+            status: company.status,
         }));
     },
 
     // Search for Company by id
     async searchCompany(id: number): Promise<Company> {
         const response = await api.get<any>(`/companies/${id}`);
-        const user = response.data;
+        const company = response.data;
         return {
-        id: user.id,
-        name: user.name,
-        description: user.company?.description || '',
-        cnpj: `${Math.floor(Math.random() * 90000000000000) + 10000000000000}`,
-        phone: user.phone,
-        email: user.email,
-        address: `${user.address?.street}, ${user.address?.city}`,
-        status: Math.random() > 0.3 ? 'ativa' : 'inativa',
+            id: company.id,
+            name: company.name,
+            description: company.description || '',
+            cnpj: company.cnpj,
+            phone: company.phone,
+            email: company.email,
+            address: company.address,
+            status: company.status,
         };
     },
 
@@ -64,7 +64,7 @@ export const companiesApi = {
     },
 
     // Create Employee
-    async createEmployee(employee: Omit<Employee, 'id'>): Promise<Employee> {
+    async createEmployee(employee: EmployeeForm): Promise<Employee> {
         const response = await api.post<Employee>('/employees', employee);
         return response.data;
     },

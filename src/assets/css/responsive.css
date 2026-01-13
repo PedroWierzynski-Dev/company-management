@@ -1,0 +1,317 @@
+/* ========== TABLET (min-width: 768px) ========== */
+@media (min-width: 768px) {
+
+    /* Ajustes de variáveis para tablet */
+    :root {
+        --font-size-base: 1rem;
+        --font-size-md: 1.1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.5rem;
+        --font-size-2xl: 2rem;
+
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
+    }
+
+    /* ========== CONTAINERS ========== */
+    .container {
+        padding: 0 var(--spacing-xl);
+    }
+
+    .container-sm {
+        max-width: var(--container-md);
+        padding: 0 var(--spacing-xl);
+    }
+
+    /* ========== GRID SYSTEM ========== */
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-auto {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+        padding: calc(var(--spacing-sm) + 0.15rem) var(--spacing-xl);
+        font-size: var(--font-size-base);
+        width: auto;
+    }
+
+    .btn-primary:hover:not(:disabled),
+    .btn-danger:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* ========== CARDS ========== */
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    .card-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ========== FORMS ========== */
+    .form-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .form-actions .btn {
+        width: auto;
+        min-width: 120px;
+    }
+
+    /* ========== MODAL ========== */
+    .modal {
+        padding: var(--spacing-xl);
+    }
+
+    .modal-header h3 {
+        font-size: var(--font-size-xl);
+    }
+
+    .modal-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .modal-actions .btn {
+        flex: 1;
+        max-width: 150px;
+    }
+
+    /* ========== PAGINATION ========== */
+    .pagination-info {
+        width: auto;
+        margin-top: 0;
+    }
+
+    /* ========== LAYOUT ========== */
+    .app-header {
+        padding: var(--spacing-md) 0;
+    }
+
+    .app-header .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: var(--font-size-xl);
+        text-align: left;
+    }
+
+    .nav {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+        width: auto;
+    }
+
+    .nav-link {
+        text-align: left;
+    }
+
+    .app-main {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .app-footer {
+        padding: var(--spacing-xl) 0;
+        margin-top: var(--spacing-2xl);
+    }
+
+    .app-footer p {
+        font-size: var(--font-size-base);
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    /* ========== LOADING ========== */
+    .loading {
+        padding: var(--spacing-2xl);
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 4px;
+    }
+
+    .spinner-small {
+        width: 30px;
+        height: 30px;
+        border-width: 3px;
+    }
+
+    /* ========== EMPTY STATE ========== */
+    .empty-state {
+        padding: var(--spacing-2xl);
+    }
+
+    .empty-state p {
+        font-size: var(--font-size-md);
+    }
+
+    /* ========== COMPANY DETALHES ========== */
+    .info-value {
+        font-size: var(--font-size-md);
+    }
+
+    /* ========== EMPLOYEE ========== */
+    .employee-item {
+        flex-direction: row;
+        text-align: left;
+        padding: var(--spacing-md);
+    }
+
+    .employee-item:hover {
+        transform: translateX(4px);
+    }
+
+    .employee-info {
+        flex: 1;
+    }
+}
+
+/* ========== DESKTOP (min-width: 1024px) ========== */
+@media (min-width: 1024px) {
+    .container {
+        max-width: var(--container-lg);
+    }
+
+    .container-sm {
+        max-width: var(--container-md);
+    }
+}
+
+/* ========== LARGE DESKTOP (min-width: 1280px) ========== */
+@media (min-width: 1280px) {
+    .container {
+        max-width: var(--container-xl);
+    }
+}
+
+/* ========== EXTRA LARGE DESKTOP (min-width: 1440px) ========== */
+@media (min-width: 1440px) {
+    :root {
+        --font-size-2xl: 2.25rem;
+        --spacing-2xl: 3.5rem;
+    }
+
+    .container {
+        max-width: var(--container-2xl);
+    }
+}
+
+/* ========== LANDSCAPE MODE (Mobile) ========== */
+@media (max-width: 767px) and (orientation: landscape) {
+    .modal {
+        max-height: 85vh;
+    }
+
+    .header h1 {
+        font-size: var(--font-size-lg);
+    }
+
+    .app-header .container {
+        gap: var(--spacing-sm);
+    }
+}
+
+/* ========== REDUCED MOTION ========== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .card:hover,
+    .employee-item:hover,
+    .btn:hover {
+        transform: none;
+    }
+}
+
+/* ========== HIGH CONTRAST ========== */
+@media (prefers-contrast: high) {
+    :root {
+        --color-border: var(--color-text);
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn,
+    .card,
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        border-width: 3px;
+    }
+
+    .nav-link:hover,
+    .nav-link.router-link-active {
+        background: rgba(255, 255, 255, 0.4);
+        border: 2px solid var(--color-white);
+    }
+}
+
+/* ========== (max-width: 375px) ========== */
+@media (max-width: 375px) {
+    :root {
+        --font-size-base: 0.875rem;
+        --font-size-lg: 1rem;
+        --font-size-xl: 1.125rem;
+        --spacing-md: 0.75rem;
+    }
+
+    .container,
+    .container-sm {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .card {
+        padding: var(--spacing-md);
+    }
+
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-xs);
+    }
+
+    .modal {
+        padding: var(--spacing-md);
+        max-height: 95vh;
+    }
+
+    .employee-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: var(--font-size-lg);
+    }
+}

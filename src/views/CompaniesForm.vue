@@ -1,6 +1,6 @@
 <template>
-    <div class="empresa-form-container">
-        <div class="form-header">
+    <div class="container">
+        <div class="header">
             <h1>{{ isEdit ? 'Editar Empresa' : 'Nova Empresa' }}</h1>
             <router-link to="/" class="btn btn-secondary">
                 ← Voltar
@@ -8,25 +8,17 @@
         </div>
 
         <!-- Loading -->
-        <div v-if="loading" class="loading">
-            <div class="spinner"></div>
-            <p>{{ isEdit ? 'Carregando dados...' : 'Salvando...' }}</p>
-        </div>
+        <Loader v-if="loading" :message="isEdit ? 'Carregando dados...' : 'Salvando...'" />
         
         <!-- Formulário -->
-        <form v-else @submit.prevent="saveCompany" class="empresa-form">
+        <form v-else @submit.prevent="saveCompany" class="form">
 
-            <div v-if="errorMessage" class="error-message">
-            {{ errorMessage }}
-            </div>
+            <Toast v-if="errorMessage" type="error" :message="errorMessage" />
+            <Toast v-if="successMessage" type="success" :message="successMessage" />
 
-            <div v-if="successMessage" class="success-message">
-                {{ successMessage }}
-            </div>
-
-            <div class="form-grid">
+            <div class="grid grid-2 card mb-3">
                 <div class="form-group">
-                    <label for="name">Nome da Empresa *</label>
+                    <label for="name">Nome da Empresa <span class="text-danger">*</span></label>
                     <input
                         id="name"
                         v-model="form.name"
@@ -39,7 +31,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="cnpj">CNPJ *</label>
+                    <label for="cnpj">CNPJ <span class="text-danger">*</span></label>
                     <input
                         id="cnpj"
                         v-model="form.cnpj"
@@ -47,19 +39,18 @@
                         required
                         placeholder="00.000.000/0000-00"
                         maxlength="18"
-                        @input="formatCnpjInput"
+                        @input="onCNPJInput"
                         :class="{ 'input-error': errors.cnpj }"
                     />
                     <span v-if="errors.cnpj" class="error-text">{{ errors.cnpj }}</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email *</label>
+                    <label for="email">Email</label>
                     <input
                         id="email"
                         v-model="form.email"
                         type="email"
-                        required
                         placeholder="contato@empresa.com"
                         :class="{ 'input-error': errors.email }"
                     />
@@ -67,19 +58,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Telefone *</label>
+                    <label for="phone">Telefone</label>
                     <input
                         id="phone"
                         v-model="form.phone"
                         type="text"
-                        required
                         placeholder="(00) 0000-0000"
+                        @input="onPhoneInput"
                         :class="{ 'input-error': errors.phone }"
                     />
                     <span v-if="errors.phone" class="error-text">{{ errors.phone }}</span>
                 </div>
 
-                <div class="form-group full-width">
+                <div class="form-group">
                     <label for="address">Endereço</label>
                     <input
                         id="address"
@@ -87,6 +78,14 @@
                         type="text"
                         placeholder="Rua, número, cidade"
                     />
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status <span class="text-danger">*</span></label>
+                    <select id="status" v-model="form.status" required>
+                        <option value="ativa">Ativa</option>
+                        <option value="inativa">Inativa</option>
+                    </select>
                 </div>
 
                 <div class="form-group full-width">
@@ -99,22 +98,16 @@
                     ></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="status">Status *</label>
-                    <select id="status" v-model="form.status" required>
-                        <option value="ativa">Ativa</option>
-                        <option value="inativa">Inativa</option>
-                    </select>
-                </div>
+                
             </div>
 
             <div class="form-actions">
-                <router-link to="/" class="btn btn-secondary">
+                <router-link to="/" class="btn btn-danger">
                 Cancelar
                 </router-link>
-                <button type="submit" class="btn btn-primary" :disabled="loading">
-                {{ isEdit ? 'Salvar Alterações' : 'Cadastrar Empresa' }}
-                </button>
+                <Button type="submit" variant="success" :loading="loading">
+                    {{ isEdit ? 'Salvar Alterações' : 'Cadastrar Empresa' }}
+                </Button>
             </div>
         </form>
     </div>
@@ -125,9 +118,14 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { companiesApi } from '@/api/companies.api';
 import type { CompanyForm } from '@/interfaces';
+import { useMask } from '@/composables/useMask';
+import Loader from '@/components/Loader.vue';
+import Toast from '@/components/Toast.vue';
+import Button from '@/components/Button.vue';
 
 const route = useRoute();
 const router = useRouter();
+const { onCNPJInput, onPhoneInput, unmask } = useMask();
 
 const loading = ref(false);
 const errorMessage = ref('');
@@ -151,20 +149,6 @@ const errors = reactive({
 });
 
 const isEdit = computed(() => !!route.params.id);
-
-const formatCnpjInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  let valor = input.value.replace(/\D/g, '');
-  
-  if (valor.length <= 14) {
-    valor = valor.replace(/(\d{2})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1/$2');
-    valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
-  }
-  
-  form.cnpj = valor;
-};
 
 const validateForm = (): boolean => {
   let valido = true;
@@ -191,11 +175,6 @@ const validateForm = (): boolean => {
     valido = false;
   }
 
-  if (!form.phone || form.phone.length < 8) {
-    errors.phone = 'Telefone inválido';
-    valido = false;
-  }
-
   return valido;
 };
 
@@ -205,15 +184,15 @@ const loadCompany = async () => {
 
   loading.value = true;
   try {
-    const empresa = await companiesApi.searchCompany(id);
+    const company = await companiesApi.searchCompany(id);
     
-    form.name = empresa.name;
-    form.cnpj = empresa.cnpj || '';
-    form.email = empresa.email || '';
-    form.phone = empresa.phone || '';
-    form.address = empresa.address || '';
-    form.description = empresa.description || '';
-    form.status = empresa.status || 'ativa';
+    form.name = company.name;
+    form.cnpj = company.cnpj || '';
+    form.email = company.email || '';
+    form.phone = company.phone || '';
+    form.address = company.address || '';
+    form.description = company.description || '';
+    form.status = company.status || 'ativa';
   } catch (err) {
     errorMessage.value = 'Erro ao carregar dados da empresa';
     console.error(err);
@@ -234,9 +213,14 @@ const saveCompany = async () => {
   loading.value = true;
 
   try {
+    const companyData: CompanyForm = {
+      ...form,
+      cnpj: unmask(form.cnpj),      // Remove máscara do CNPJ
+      phone: unmask(form.phone || '') // Remove máscara do telefone
+    };
     if (isEdit.value) {
       const id = Number(route.params.id);
-      await companiesApi.updateCompany(id, form);
+      await companiesApi.updateCompany(id, companyData);
       successMessage.value = 'Empresa atualizada com sucesso!';
     } else {
       await companiesApi.createCompany(form);
@@ -260,176 +244,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style scoped>
-.empresa-form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.form-header h1 {
-  color: #2c3e50;
-  font-size: 2rem;
-  margin: 0;
-}
-
-.empresa-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 0.75rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.form-group input.input-error {
-  border-color: #e74c3c;
-}
-
-.error-text {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.form-group textarea {
-  resize: vertical;
-  font-family: inherit;
-}
-
-.error-message {
-  padding: 1rem;
-  background: #ffe6e6;
-  border-left: 4px solid #e74c3c;
-  color: #c0392b;
-  border-radius: 4px;
-  margin-bottom: 1.5rem;
-}
-
-.success-message {
-  padding: 1rem;
-  background: #d4edda;
-  border-left: 4px solid #28a745;
-  color: #155724;
-  border-radius: 4px;
-  margin-bottom: 1.5rem;
-}
-
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #3498db;
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #2980b9;
-}
-
-.btn-secondary {
-  background: #95a5a6;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #7f8c8d;
-}
-
-.loading {
-  text-align: center;
-  padding: 3rem;
-}
-
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .form-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-}
-</style>
