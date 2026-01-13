@@ -15,6 +15,15 @@
             <Button variant="secondary" @click="loadCompanies">Tentar Novamente</Button>
         </Toast>
 
+        <div v-else-if="companies.length === 0" class="empty-state">
+            <div class="empty-state-icon">🏢</div>
+            <h2>Nenhuma empresa cadastrada</h2>
+            <p>Comece cadastrando sua primeira empresa para gerenciar seus dados.</p>
+            <router-link to="/companies/new" class="btn btn-primary mt-3">
+                + Cadastrar Primeira Empresa
+            </router-link>
+        </div>
+
         <div v-else class="grid grid-2">
             <div v-for="company in companiesPagination" 
                 :key="company.id" class="card" 
