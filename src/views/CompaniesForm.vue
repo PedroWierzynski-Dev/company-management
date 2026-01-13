@@ -153,76 +153,75 @@ const errors = reactive({
 const isEdit = computed(() => !!route.params.id);
 
 const validateForm = (): boolean => {
-  let valido = true;
+    let valido = true;
 
-  errors.name = '';
-  errors.cnpj = '';
-  errors.email = '';
-  errors.phone = '';
+    errors.name = '';
+    errors.cnpj = '';
+    errors.email = '';
+    errors.phone = '';
 
-  if (!form.name || form.name.length < 3) {
-    errors.name = 'Nome deve ter no mínimo 3 caracteres';
-    valido = false;
-  }
+    if (!form.name || form.name.length < 3) {
+        errors.name = 'Nome deve ter no mínimo 3 caracteres';
+        valido = false;
+    }
 
-  const cnpjNumbers = form.cnpj?.replace(/\D/g, '') || '';
-  if (cnpjNumbers.length !== 14) {
-    errors.cnpj = 'CNPJ deve ter 14 dígitos';
-    valido = false;
-  }
+    if (!validateCNPJ(form.cnpj)) {
+        errors.cnpj = 'CNPJ inválido';
+        valido = false;
+    }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!form.email || !emailRegex.test(form.email)) {
-    errors.email = 'Email inválido';
-    valido = false;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email || !emailRegex.test(form.email)) {
+        errors.email = 'Email inválido';
+        valido = false;
+    }
 
-  return valido;
+    return valido;
 };
 
 const loadCompany = async () => {
-  const id = Number(route.params.id);
-  if (!id) return;
+    const id = Number(route.params.id);
+    if (!id) return;
 
-  loading.value = true;
-  try {
-    const company = await companiesApi.searchCompany(id);
-    
-    form.name = company.name;
-    form.cnpj = company.cnpj || '';
-    form.email = company.email || '';
-    form.phone = company.phone || '';
-    form.address = company.address || '';
-    form.description = company.description || '';
-    form.status = company.status || 'ativa';
-  } catch (err) {
-    if (err.response?.status === 500) {
-        errorMessage.value = 'Erro no servidor. Tente novamente mais tarde.';
-    } else {
-        errorMessage.value = 'Aconteceu algo inesperado, tente novamente mais tarde';
+    loading.value = true;
+    try {
+        const company = await companiesApi.searchCompany(id);
+        
+        form.name = company.name;
+        form.cnpj = company.cnpj || '';
+        form.email = company.email || '';
+        form.phone = company.phone || '';
+        form.address = company.address || '';
+        form.description = company.description || '';
+        form.status = company.status || 'ativa';
+    } catch (err) {
+        if (err.response?.status === 500) {
+            errorMessage.value = 'Erro no servidor. Tente novamente mais tarde.';
+        } else {
+            errorMessage.value = 'Aconteceu algo inesperado, tente novamente mais tarde';
+        }
+        console.error(err);
+    } finally {
+        loading.value = false;
     }
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
 };
 
 const saveCompany = async () => {
-  errorMessage.value = '';
-  successMessage.value = '';
+    errorMessage.value = '';
+    successMessage.value = '';
 
-  if (!validateForm()) {
-        errorMessage.value = 'Por favor, corrija os erros no formulário';
-        return;
-  }
+    if (!validateForm()) {
+            errorMessage.value = 'Por favor, corrija os erros no formulário';
+            return;
+    }
 
-  loading.value = true;
+    loading.value = true;
 
-  try {
-    const companyData: CompanyForm = {
-        ...form,
-        cnpj: unmask(form.cnpj),      // Remove máscara do CNPJ
-        phone: unmask(form.phone || '') // Remove máscara do telefone
+    try {
+        const companyData: CompanyForm = {
+            ...form,
+            cnpj: unmask(form.cnpj),      // Remove máscara do CNPJ
+            phone: unmask(form.phone || '') // Remove máscara do telefone
         };
         if (isEdit.value) {
             const id = Number(route.params.id);
@@ -257,8 +256,8 @@ const saveCompany = async () => {
 };
 
 onMounted(() => {
-  if (isEdit.value) {
-    loadCompany();
-  }
+    if (isEdit.value) {
+        loadCompany();
+    }
 });
 </script>

@@ -15,7 +15,7 @@
 
     <footer class="app-footer">
       <div class="container">
-        <p>© 2025 Sistema de Gerenciamento de Empresas</p>
+        <p>© 2026 Sistema de Gerenciamento de Empresas</p>
       </div>
     </footer>
   </div>

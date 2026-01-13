@@ -37,6 +37,16 @@ export const companiesApi = {
     async createCompany(company: CompanyForm): Promise<Company> {
         const companies = await this.listCompanies();
 
+        const cnpjExists = companies.some(c => c.cnpj === company.cnpj);
+        if (cnpjExists) {
+            throw {
+                response: {
+                    status: 409,
+                    data: { message: 'CNPJ já cadastrado' }
+                }
+            };
+        }
+
         const maxId = companies.length > 0
             ? Math.max(...companies.map(c => Number(c.id) || 0))
             : 0;
@@ -52,6 +62,21 @@ export const companiesApi = {
 
     // Update company
     async updateCompany(id: number, company: CompanyForm): Promise<Company> {
+        const companies = await this.listCompanies();
+
+
+        const cnpjExists = companies.some(c =>
+            c.cnpj === company.cnpj && Number(c.id) !== id
+        );
+        if (cnpjExists) {
+            throw {
+                response: {
+                    status: 409,
+                    data: { message: 'CNPJ já cadastrado para outra empresa' }
+                }
+            };
+        }
+
         const response = await api.put<Company>(`/companies/${id}`, company);
         return response.data;
     },
