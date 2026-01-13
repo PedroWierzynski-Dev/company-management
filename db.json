@@ -6,7 +6,7 @@
       "email": "contato@techsolutions.com.br",
       "phone": "1134567890",
       "address": "Rua Doutor Barreto Coutinho, 151",
-      "description": "",
+      "description": "Teste de Descrição",
       "status": "ativa",
       "id": "1"
     },
@@ -101,14 +101,24 @@
       "status": "ativa"
     },
     {
-      "id": "e2e1",
-      "name": "Empresa Teste",
-      "cnpj": "81216100280572",
-      "email": "pedrohwierzynski@gmail.com",
-      "phone": "(41) 98712-31231",
-      "address": "Rua Gustavo Schier, 307",
-      "description": "dasdasdasdasdsadsa",
+      "id": "11",
+      "name": "Wierzynski Devs",
+      "cnpj": "30805711000102",
+      "email": "wierzynskidevs@gmail.com",
+      "phone": "41985212989",
+      "address": "Rua Doutor Barreto Coutinho, 151",
+      "description": "Breve descrição da empresa",
       "status": "ativa"
+    },
+    {
+      "id": "12",
+      "name": "Empresa Teste",
+      "cnpj": "13123123213123",
+      "email": "pedrohwserra@gmail.com",
+      "phone": "41987468102",
+      "address": "Rua João Batista Trentin, 936",
+      "description": "asdadasdasdasdsadas",
+      "status": "inativa"
     }
   ],
   "employees": [
@@ -231,14 +241,6 @@
       "email": "bruno.carvalho@netcore.com.br",
       "phone": "(27) 98765-4335",
       "position": "Engenheiro de Redes"
-    },
-    {
-      "id": "e7f4",
-      "companyId": 1,
-      "name": "Valdneia Wierzynski de Oliveira",
-      "email": "valdneia@mail.com",
-      "phone": "(41) 98123-13122",
-      "position": "Estagiária"
     }
   ]
 }

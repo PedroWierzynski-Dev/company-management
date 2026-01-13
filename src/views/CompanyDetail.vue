@@ -25,7 +25,7 @@
                 <div class="card-header">
                     <h2>{{ company?.name }}</h2>
                     <span class="status-badge" :class="company?.status">
-                        {{ company?.status === 'ativa' ? '✓ Ativa' : '⊗ Inativa' }}
+                        {{ company?.status === 'ativa' ? 'Ativa' : 'Inativa' }}
                     </span>
                 </div>
 
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card mt-3">
                 <div class="card-header">
                     <h2>Usuários Vinculados</h2>
                     <div class="flex flex-gap-sm">
@@ -147,7 +147,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted, computed } from 'vue';
-    import { useRoute } from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
     import { companiesApi } from '@/api/companies.api';
     import type { Company, Employee } from '@/interfaces';
     import Loader from '@/components/Loader.vue';
@@ -168,11 +168,23 @@
     const employeeToExclude = ref<Employee | null>(null);
     const deletingEmployee = ref(false);
     const { maskCNPJ, maskPhone } = useMask();
+    const router = useRouter();
+    const errorMessage = ref('');
 
-
-    const companyId = computed(() => Number(route.params.id));
+    const companyId = computed(() => {
+        const id = Number(route.params.id);
+        if (!id || isNaN(id)) {
+            return 0;
+        }
+        return id;
+    });
 
     const loadCompany = async () => {
+        if (companyId.value === 0) {
+            errorMessage.value = 'Erro ao carregar dados da empresa';
+            // router.push('/');
+            return;
+        }
         loading.value = true;
         error.value = null;
 

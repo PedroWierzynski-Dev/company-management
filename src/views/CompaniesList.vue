@@ -27,11 +27,10 @@
                     </span>
                 </div>
 
-                <div class="company-info">
+                <div class="company-info mb-3">
                     <p><strong>CNPJ:</strong> {{ maskCNPJ(company.cnpj) }}</p>
                     <p><strong>Email:</strong> {{ company.email }}</p>
                     <p><strong>Telefone:</strong> {{maskPhone(company.phone) }}</p>
-                    <p class="description">{{ company.description }}</p>
                 </div>
 
                 <div class="flex flex-between">

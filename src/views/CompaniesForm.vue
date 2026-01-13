@@ -194,7 +194,13 @@ const loadCompany = async () => {
     form.description = company.description || '';
     form.status = company.status || 'ativa';
   } catch (err) {
-    errorMessage.value = 'Erro ao carregar dados da empresa';
+    if (err.response?.status === 404) {
+        errorMessage.value = 'Empresa não encontrada';
+        } else if (err.response?.status === 500) {
+        errorMessage.value = 'Erro no servidor. Tente novamente mais tarde.';
+        } else {
+        errorMessage.value = 'Aconteceu algo inesperado, tente novamente mais tarde';
+        }
     console.error(err);
   } finally {
     loading.value = false;
@@ -206,36 +212,48 @@ const saveCompany = async () => {
   successMessage.value = '';
 
   if (!validateForm()) {
-    errorMessage.value = 'Por favor, corrija os erros no formulário';
-    return;
+        errorMessage.value = 'Por favor, corrija os erros no formulário';
+        return;
   }
 
   loading.value = true;
 
   try {
     const companyData: CompanyForm = {
-      ...form,
-      cnpj: unmask(form.cnpj),      // Remove máscara do CNPJ
-      phone: unmask(form.phone || '') // Remove máscara do telefone
-    };
-    if (isEdit.value) {
-      const id = Number(route.params.id);
-      await companiesApi.updateCompany(id, companyData);
-      successMessage.value = 'Empresa atualizada com sucesso!';
-    } else {
-      await companiesApi.createCompany(form);
-      successMessage.value = 'Empresa cadastrada com sucesso!';
+        ...form,
+        cnpj: unmask(form.cnpj),      // Remove máscara do CNPJ
+        phone: unmask(form.phone || '') // Remove máscara do telefone
+        };
+        if (isEdit.value) {
+            const id = Number(route.params.id);
+            await companiesApi.updateCompany(id, companyData);
+            successMessage.value = 'Empresa atualizada com sucesso!';
+            setTimeout(() => {
+                router.push('/');
+            }, 1500);
+        } else {
+            const createdCompany = await companiesApi.createCompany(companyData);
+            successMessage.value = 'Empresa cadastrada com sucesso!';
+            setTimeout(() => {
+                router.push('/');
+            }, 1500);
+        }
+    } catch (err) {
+        if (err.response?.status === 400) {
+            errorMessage.value = 'Dados inválidos. Verifique os campos e tente novamente.';
+        } else if (err.response?.status === 409) {
+            errorMessage.value = 'Esta empresa já está cadastrada.';
+        } else if (err.response?.status === 500) {
+            errorMessage.value = 'Erro no servidor. Tente novamente mais tarde.';
+        } else if (!navigator.onLine) {
+            errorMessage.value = 'Sem conexão com a internet. Verifique sua conexão.';
+        } else {
+            errorMessage.value = 'Aconteceu algo inesperado, tente novamente mais tarde';
+        }
+        console.error('Erro ao salvar empresa:', err);
+    } finally {
+        loading.value = false;
     }
-
-    setTimeout(() => {
-      router.push('/');
-    }, 1500);
-  } catch (err) {
-    errorMessage.value = 'Erro ao salvar empresa. Tente novamente.';
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
 };
 
 onMounted(() => {

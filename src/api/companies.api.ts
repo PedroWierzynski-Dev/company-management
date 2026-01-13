@@ -35,7 +35,18 @@ export const companiesApi = {
 
     // Create company
     async createCompany(company: CompanyForm): Promise<Company> {
-        const response = await api.post<Company>('/companies', company);
+        const companies = await this.listCompanies();
+
+        const maxId = companies.length > 0
+            ? Math.max(...companies.map(c => Number(c.id) || 0))
+            : 0;
+        const companyWithId = {
+            ...company,
+            id: String(maxId + 1)
+        };
+
+        const response = await api.post<Company>('/companies', companyWithId);
+
         return response.data;
     },
 
