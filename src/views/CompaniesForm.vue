@@ -18,7 +18,7 @@
 
             <div class="grid grid-2 card mb-3">
                 <div class="form-group">
-                    <label for="name">Nome da Empresa <span class="text-danger">*</span></label>
+                    <label for="name">Nome da Empresa *</label>
                     <input
                         id="name"
                         v-model="form.name"
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="cnpj">CNPJ <span class="text-danger">*</span></label>
+                    <label for="cnpj">CNPJ *</label>
                     <input
                         id="cnpj"
                         v-model="form.cnpj"
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="status">Status <span class="text-danger">*</span></label>
+                    <label for="status">Status *</label>
                     <select id="status" v-model="form.status" required>
                         <option value="ativa">Ativa</option>
                         <option value="inativa">Inativa</option>
@@ -119,6 +119,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { companiesApi } from '@/api/companies.api';
 import type { CompanyForm } from '@/interfaces';
 import { useMask } from '@/composables/useMask';
+import { useValidation } from '@/composables/useValidation';
 import Loader from '@/components/Loader.vue';
 import Toast from '@/components/Toast.vue';
 import Button from '@/components/Button.vue';
@@ -126,6 +127,7 @@ import Button from '@/components/Button.vue';
 const route = useRoute();
 const router = useRouter();
 const { onCNPJInput, onPhoneInput, unmask } = useMask();
+const { validateCNPJ } = useValidation();
 
 const loading = ref(false);
 const errorMessage = ref('');
@@ -194,13 +196,11 @@ const loadCompany = async () => {
     form.description = company.description || '';
     form.status = company.status || 'ativa';
   } catch (err) {
-    if (err.response?.status === 404) {
-        errorMessage.value = 'Empresa não encontrada';
-        } else if (err.response?.status === 500) {
+    if (err.response?.status === 500) {
         errorMessage.value = 'Erro no servidor. Tente novamente mais tarde.';
-        } else {
+    } else {
         errorMessage.value = 'Aconteceu algo inesperado, tente novamente mais tarde';
-        }
+    }
     console.error(err);
   } finally {
     loading.value = false;

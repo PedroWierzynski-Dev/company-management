@@ -33,12 +33,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Telefone *</label>
+                    <label for="phone">Telefone</label>
                     <input
                         id="phone"
                         v-model="form.phone"
                         type="text"
-                        required
                         placeholder="(00) 00000-0000"
                         @input="onPhoneInput"
                         :class="{ 'input-error': errors.phone }"
@@ -74,93 +73,94 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { companiesApi } from '@/api/companies.api';
-import { useMask } from '@/composables/useMask';
-import Button from './Button.vue';
-import Toast from './Toast.vue';
+    import { reactive, ref } from 'vue';
+    import { companiesApi } from '@/api/companies.api';
+    import { useMask } from '@/composables/useMask';
+    import { useValidation } from '@/composables/useValidation'; 
+    import Button from './Button.vue';
+    import Toast from './Toast.vue';
 
-interface Props {
-  companyId: number;
-}
+    interface Props {
+        companyId: number;
+    }
 
-const props = defineProps<Props>();
-const emit = defineEmits<{
-  close: [];
-  success: [];
-}>();
+    const props = defineProps<Props>();
+    const emit = defineEmits<{
+        close: [];
+        success: [];
+    }>();
 
-const { onPhoneInput, unmask } = useMask();
+    const { onPhoneInput, unmask } = useMask();
+    const { validateEmail } = useValidation();
 
-const form = reactive({
-  name: '',
-  email: '',
-  phone: '',
-  position: ''
-});
-
-const errors = reactive({
-  name: '',
-  email: '',
-  phone: '',
-  position: ''
-});
-
-const loading = ref(false);
-const errorMessage = ref('');
-
-const validateForm = (): boolean => {
-  let valid = true;
-  
-  errors.name = '';
-  errors.email = '';
-  errors.phone = '';
-  errors.position = '';
-
-  if (!form.name || form.name.length < 3) {
-    errors.name = 'Nome deve ter no mínimo 3 caracteres';
-    valid = false;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!form.email || !emailRegex.test(form.email)) {
-    errors.email = 'Email inválido';
-    valid = false;
-  }
-
-  if (!form.position || form.position.length < 2) {
-    errors.position = 'Cargo deve ter no mínimo 2 caracteres';
-    valid = false;
-  }
-
-  return valid;
-};
-
-const handleSubmit = async () => {
-  errorMessage.value = '';
-  
-  if (!validateForm()) {
-    return;
-  }
-
-  loading.value = true;
-
-  try {
-    await companiesApi.createEmployee({
-      companyId: props.companyId,
-      name: form.name,
-      email: form.email,
-      phone: unmask(form.phone),
-      position: form.position
+    const form = reactive({
+        name: '',
+        email: '',
+        phone: '',
+        position: ''
     });
 
-    emit('success');
-    emit('close');
-  } catch (err) {
-    errorMessage.value = 'Erro ao adicionar funcionário. Tente novamente.';
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
+    const errors = reactive({
+        name: '',
+        email: '',
+        phone: '',
+        position: ''
+    });
+
+    const loading = ref(false);
+    const errorMessage = ref('');
+
+    const validateForm = (): boolean => {
+        let valid = true;
+        
+        errors.name = '';
+        errors.email = '';
+        errors.phone = '';
+        errors.position = '';
+
+        if (!form.name || form.name.length < 3) {
+            errors.name = 'Nome deve ter no mínimo 3 caracteres';
+            valid = false;
+        }
+
+            if (!validateEmail(form.email)) {
+            errors.email = 'Email inválido';
+            valid = false;
+        }
+
+        if (!form.position || form.position.length < 2) {
+            errors.position = 'Cargo deve ter no mínimo 2 caracteres';
+            valid = false;
+        }
+
+        return valid;
+    };
+
+    const handleSubmit = async () => {
+        errorMessage.value = '';
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        loading.value = true;
+
+        try {
+            await companiesApi.createEmployee({
+            companyId: props.companyId,
+            name: form.name,
+            email: form.email,
+            phone: unmask(form.phone),
+            position: form.position
+            });
+
+            emit('success');
+            emit('close');
+        } catch (err) {
+            errorMessage.value = 'Erro ao adicionar funcionário. Tente novamente.';
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    };
 </script>
