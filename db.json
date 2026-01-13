@@ -1,0 +1,226 @@
+{
+  "companies": [
+    {
+      "id": "1",
+      "name": "Tech Solutions Brasil",
+      "cnpj": "12345678000190",
+      "email": "contato@techsolutions.com.br",
+      "phone": "(11) 3456-7890",
+      "address": "Av. Paulista, 1000 - São Paulo, SP",
+      "description": "Desenvolvimento de software empresarial",
+      "status": "ativa"
+    },
+    {
+      "name": "Inovare Tecnologia",
+      "cnpj": "21576564535229",
+      "email": "contato@inovare.com.br",
+      "phone": "(21) 2345-6789",
+      "address": "undefined, undefined",
+      "description": "",
+      "status": "ativa",
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "name": "Digital Corp",
+      "cnpj": "11122233000144",
+      "email": "info@digitalcorp.com.br",
+      "phone": "(31) 3344-5566",
+      "address": "Av. Afonso Pena, 1500 - Belo Horizonte, MG",
+      "description": "Soluções em cloud computing",
+      "status": "inativa"
+    },
+    {
+      "name": "StartHub Ventures",
+      "cnpj": "84680552185115",
+      "email": "hello@starthub.com.br",
+      "phone": "(41) 3322-1144",
+      "address": "undefined, undefined",
+      "description": "",
+      "status": "ativa",
+      "id": "4"
+    },
+    {
+      "id": "5",
+      "name": "CloudMax Sistemas",
+      "cnpj": "22233344000155",
+      "email": "suporte@cloudmax.com.br",
+      "phone": "(51) 3456-7891",
+      "address": "Av. Ipiranga, 2000 - Porto Alegre, RS",
+      "description": "Serviços de infraestrutura cloud",
+      "status": "ativa"
+    },
+    {
+      "id": "6",
+      "name": "DataFlow Analytics",
+      "cnpj": "33344455000166",
+      "email": "comercial@dataflow.com.br",
+      "phone": "(85) 3234-5678",
+      "address": "Rua Major Facundo, 300 - Fortaleza, CE",
+      "description": "Business Intelligence e Analytics",
+      "status": "ativa"
+    },
+    {
+      "id": "7",
+      "name": "SmartBiz Solutions",
+      "cnpj": "44455566000177",
+      "email": "contato@smartbiz.com.br",
+      "phone": "(71) 3345-6789",
+      "address": "Av. Tancredo Neves, 1200 - Salvador, BA",
+      "description": "ERP e sistemas de gestão",
+      "status": "inativa"
+    },
+    {
+      "id": "8",
+      "name": "FutureTech Ltda",
+      "cnpj": "55566677000199",
+      "email": "info@futuretech.com.br",
+      "phone": "(81) 3456-7890",
+      "address": "Rua da Aurora, 500 - Recife, PE",
+      "description": "IoT e automação industrial",
+      "status": "ativa"
+    },
+    {
+      "id": "9",
+      "name": "ByteCode Desenvolvimento",
+      "cnpj": "66677788000122",
+      "email": "dev@bytecode.com.br",
+      "phone": "(62) 3234-5678",
+      "address": "Av. Goiás, 900 - Goiânia, GO",
+      "description": "Desenvolvimento de aplicativos mobile",
+      "status": "ativa"
+    },
+    {
+      "id": "10",
+      "name": "NetCore Sistemas",
+      "cnpj": "77788899000133",
+      "email": "contato@netcore.com.br",
+      "phone": "(27) 3345-6789",
+      "address": "Rua Sete de Setembro, 700 - Vitória, ES",
+      "description": "Infraestrutura de redes",
+      "status": "ativa"
+    }
+  ],
+  "employees": [
+    {
+      "id": "1",
+      "companyId": 1,
+      "name": "João Silva",
+      "email": "joao.silva@techsolutions.com.br",
+      "phone": "(11) 98765-4321",
+      "position": "TechLead"
+    },
+    {
+      "id": "2",
+      "companyId": 1,
+      "name": "Maria Santos",
+      "email": "maria.santos@techsolutions.com.br",
+      "phone": "(11) 98765-4322",
+      "position": "Desenvolvedora Senior"
+    },
+    {
+      "id": "3",
+      "companyId": 1,
+      "name": "Maria Aparecida",
+      "email": "maria.aparecida@techsolutions.com.br",
+      "phone": "(11) 98765-4323",
+      "position": "Estagiária"
+    },
+    {
+      "id": "4",
+      "companyId": 2,
+      "name": "Pedro Oliveira",
+      "email": "pedro.oliveira@inovare.com.br",
+      "phone": "(21) 98765-4324",
+      "position": "Gestor de Projetos"
+    },
+    {
+      "id": "5",
+      "companyId": 2,
+      "name": "Ana Costa",
+      "email": "ana.costa@inovare.com.br",
+      "phone": "(21) 91335-4325",
+      "position": "Consultora"
+    },
+    {
+      "id": "6",
+      "companyId": 3,
+      "name": "Carlos Ferreira",
+      "email": "carlos.ferreira@digitalcorp.com.br",
+      "phone": "(31) 98765-4326",
+      "position": "Analista de RH"
+    },
+    {
+      "id": "7",
+      "companyId": 3,
+      "name": "Matheus Santos",
+      "email": "matheus.santos@digitalcorp.com.br",
+      "phone": "(31) 98332-4327",
+      "position": "Coordenador de RH"
+    },
+    {
+      "id": "8",
+      "companyId": 4,
+      "name": "Julia Almeida",
+      "email": "julia.almeida@starthub.com.br",
+      "phone": "(41) 98765-4328",
+      "position": "Mentora de Startups"
+    },
+    {
+      "id": "9",
+      "companyId": 4,
+      "name": "Lucas Pereira",
+      "email": "lucas.pereira@starthub.com.br",
+      "phone": "(41) 98765-4329",
+      "position": "CEO"
+    },
+    {
+      "id": "10",
+      "companyId": 5,
+      "name": "Fernanda Lima",
+      "email": "fernanda.lima@cloudmax.com.br",
+      "phone": "(51) 98765-4330",
+      "position": "Desenvolvedora Backend"
+    },
+    {
+      "id": "11",
+      "companyId": 6,
+      "name": "Rafael Souza",
+      "email": "rafael.souza@dataflow.com.br",
+      "phone": "(85) 98765-4331",
+      "position": "Cientista de Dados"
+    },
+    {
+      "id": "12",
+      "companyId": 7,
+      "name": "Beatriz Rodrigues",
+      "email": "beatriz.rodrigues@smartbiz.com.br",
+      "phone": "(71) 98765-4332",
+      "position": "TechLead"
+    },
+    {
+      "id": "13",
+      "companyId": 8,
+      "name": "Thiago Martins",
+      "email": "thiago.martins@futuretech.com.br",
+      "phone": "(81) 98765-4333",
+      "position": "Engenheiro de IoT"
+    },
+    {
+      "id": "14",
+      "companyId": 9,
+      "name": "Camila Gomes",
+      "email": "camila.gomes@bytecode.com.br",
+      "phone": "(62) 98765-4334",
+      "position": "Desenvolvedora Mobile"
+    },
+    {
+      "id": "15",
+      "companyId": 10,
+      "name": "Bruno Carvalho",
+      "email": "bruno.carvalho@netcore.com.br",
+      "phone": "(27) 98765-4335",
+      "position": "Engenheiro de Redes"
+    }
+  ]
+}
